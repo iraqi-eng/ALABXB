@@ -1,0 +1,41 @@
+name: Build ALABXB APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract ALABXB source ZIP
+        run: |
+          mkdir -p build-source
+          unzip -q "ALABXB-v0.1-branding-splash-v2.zip" -d build-source
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6'
+
+      - name: Build Debug APK
+        working-directory: build-source/ALABXB-v0.1
+        run: gradle :app:assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ALABXB-APK
+          path: build-source/ALABXB-v0.1/app/build/outputs/apk/debug/app-debug.apk
