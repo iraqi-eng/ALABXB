@@ -19,6 +19,10 @@ jobs:
           mkdir -p build-source
           unzip -q "ALABXB-v0.1-branding-splash-v2.zip" -d build-source
 
+      - name: Remove legacy Kotlin plugin
+        run: |
+          sed -i '/org.jetbrains.kotlin.android/d' build-source/ALABXB-v0.1/app/build.gradle.kts
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
