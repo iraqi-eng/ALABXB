@@ -43,6 +43,20 @@ jobs:
           )
 
           app.write_text(text)
+
+          network_tool = Path(
+              "build-source/ALABXB-v0.1/app/src/main/java/"
+              "com/alabxb/app/core/tools/network/NetworkIntelligenceTool.kt"
+          )
+
+          network_text = network_tool.read_text()
+
+          dispatchers_import = "import kotlinx.coroutines.Dispatchers\n"
+
+          if dispatchers_import not in network_text:
+              network_text = dispatchers_import + network_text
+              network_tool.write_text(network_text)
+
           PY
 
       - name: Set up Java
