@@ -19,9 +19,10 @@ jobs:
           mkdir -p build-source
           unzip -q "ALABXB-v0.1-branding-splash-v2.zip" -d build-source
 
-      - name: Remove legacy Kotlin plugin
+      - name: Update Kotlin configuration
         run: |
-          sed -i '/org.jetbrains.kotlin.android/d' build-source/ALABXB-v0.1/app/build.gradle.kts
+          sed -i '/id("org.jetbrains.kotlin.android")/d' build-source/ALABXB-v0.1/app/build.gradle.kts
+          sed -i 's/    kotlinOptions { jvmTarget = "17" }/    kotlin { compilerOptions { jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17 } }/' build-source/ALABXB-v0.1/app/build.gradle.kts
 
       - name: Set up Java
         uses: actions/setup-java@v4
